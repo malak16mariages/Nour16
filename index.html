@@ -9,25 +9,29 @@
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#111,#222);
+background:url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874") center/cover no-repeat fixed;
 color:white;
 display:flex;
 justify-content:center;
 padding:20px;
 }
 
+/* 🧊 تصميم فاخر */
 .container{
 width:100%;
 max-width:450px;
-background:#1c1c1c;
+background:rgba(0,0,0,0.75);
+backdrop-filter:blur(10px);
 padding:20px;
-border-radius:15px;
-box-shadow:0 0 15px rgba(255,255,255,0.1);
+border-radius:18px;
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 h2{
 text-align:center;
 color:#00ffcc;
+text-shadow:0 0 10px rgba(0,255,204,0.3);
 }
 
 input,select,button{
@@ -40,14 +44,15 @@ outline:none;
 }
 
 button{
-background:#00ffcc;
+background:linear-gradient(135deg,#00ffcc,#00b3a6);
 color:black;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
 }
 
 button:hover{
-background:#00ddb3;
+transform:scale(1.03);
 }
 
 .step{display:none;}
@@ -57,9 +62,9 @@ background:#00ddb3;
 display:none;
 text-align:center;
 padding:15px;
-border:1px solid #333;
-border-radius:10px;
 margin-bottom:10px;
+border:1px solid rgba(255,255,255,0.1);
+border-radius:10px;
 }
 
 .small{
@@ -76,14 +81,14 @@ text-align:center;
 
 <h2>حجز خدمات مساج</h2>
 
-<!-- ⛔ حالة الإغلاق -->
+<!-- ⛔ الإغلاق -->
 <div id="closed">
 <h2>⛔ الموقع مغلق</h2>
 <p>أوقات العمل من 22:00 إلى 07:00</p>
 <h3 id="countdown" style="color:#00ffcc;"></h3>
 </div>
 
-<!-- 🔵 STEP 1 -->
+<!-- 🔵 الخطوة 1 -->
 <div id="step1" class="step active">
 
 <input type="text" id="name" placeholder="الاسم">
@@ -92,9 +97,14 @@ text-align:center;
 
 <select id="state">
 <option>اختر الولاية</option>
-<option>الجزائر</option><option>وهران</option><option>قسنطينة</option>
-<option>باتنة</option><option>بجاية</option><option>سطيف</option>
-<option>عنابة</option><option>تلمسان</option><option>بسكرة</option>
+<option>الجزائر</option>
+<option>وهران</option>
+<option>قسنطينة</option>
+<option>باتنة</option>
+<option>بجاية</option>
+<option>سطيف</option>
+<option>عنابة</option>
+<option>تلمسان</option>
 </select>
 
 <select id="service">
@@ -107,10 +117,12 @@ text-align:center;
 
 </div>
 
-<!-- 🟢 STEP 2 -->
+<!-- 🟢 الخطوة 2 -->
 <div id="step2" class="step">
 
-<p class="small">💳 يجب رفع وصل الدفع لإتمام الحجز</p>
+<p class="small">💳 رقم الحساب البريدي: <br><b>00799999004286372491</b></p>
+
+<p class="small">⚠️ يجب رفع وصل الدفع لإتمام الحجز</p>
 
 <input type="file" id="proof">
 
@@ -126,9 +138,9 @@ text-align:center;
 
 <script>
 
-/* =========================
-   وقت العمل (آمن)
-========================= */
+/* =======================
+   وقت العمل
+======================= */
 function isOpenTime(){
 let h = new Date().getHours();
 return (h >= 22 || h < 7);
@@ -142,12 +154,11 @@ document.getElementById("step1").style.display="block";
 return;
 }
 
-/* ⛔ مغلق */
 document.getElementById("step1").style.display="none";
 document.getElementById("step2").style.display="none";
 document.getElementById("closed").style.display="block";
 
-/* حساب العدّاد */
+/* عدّاد */
 let now = new Date();
 let next = new Date();
 next.setHours(7,0,0,0);
@@ -169,13 +180,12 @@ document.getElementById("countdown").innerText =
 setInterval(timeControl,1000);
 timeControl();
 
-
-/* =========================
-   الخطوات
-========================= */
+/* =======================
+   خطوات
+======================= */
 function nextStep(){
 if(!isOpenTime()){
-alert("⛔ الموقع مغلق الآن");
+alert("⛔ الموقع مغلق");
 return;
 }
 document.getElementById("step1").classList.remove("active");
@@ -187,10 +197,9 @@ document.getElementById("step2").classList.remove("active");
 document.getElementById("step1").classList.add("active");
 }
 
-
-/* =========================
+/* =======================
    إرسال تيليغرام
-========================= */
+======================= */
 async function send(){
 
 if(!isOpenTime()){
@@ -249,4 +258,4 @@ alert("❌ خطأ في الإرسال");
 </script>
 
 </body>
-  </html>
+</html>
