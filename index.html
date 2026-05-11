@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خدمات مساج - الحجز</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#111,#222);
+color:white;
+display:flex;
+justify-content:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:450px;
+background:#1c1c1c;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(255,255,255,0.1);
+}
+
+h2{
+text-align:center;
+color:#00ffcc;
+}
+
+input,select,button{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+border:none;
+outline:none;
+}
+
+button{
+background:#00ffcc;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#00ddb3;
+}
+
+.step{display:none;}
+.active{display:block;}
+
+#closed{
+display:none;
+text-align:center;
+padding:15px;
+border:1px solid #333;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.small{
+font-size:12px;
+opacity:0.8;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>حجز خدمات مساج</h2>
+
+<!-- ⛔ حالة الإغلاق -->
+<div id="closed">
+<h2>⛔ الموقع مغلق</h2>
+<p>أوقات العمل من 22:00 إلى 07:00</p>
+<h3 id="countdown" style="color:#00ffcc;"></h3>
+</div>
+
+<!-- 🔵 STEP 1 -->
+<div id="step1" class="step active">
+
+<input type="text" id="name" placeholder="الاسم">
+<input type="text" id="lastname" placeholder="اللقب">
+<input type="tel" id="phone" placeholder="رقم الهاتف">
+
+<select id="state">
+<option>اختر الولاية</option>
+<option>الجزائر</option><option>وهران</option><option>قسنطينة</option>
+<option>باتنة</option><option>بجاية</option><option>سطيف</option>
+<option>عنابة</option><option>تلمسان</option><option>بسكرة</option>
+</select>
+
+<select id="service">
+<option>اختر الخدمة</option>
+<option>مساج عادي</option>
+<option>مساج VIP</option>
+</select>
+
+<button onclick="nextStep()">التالي ➜ الدفع</button>
+
+</div>
+
+<!-- 🟢 STEP 2 -->
+<div id="step2" class="step">
+
+<p class="small">💳 يجب رفع وصل الدفع لإتمام الحجز</p>
+
+<input type="file" id="proof">
+
+<button onclick="send()">تأكيد الحجز</button>
+
+<button onclick="backStep()" style="background:#444;color:white;">
+رجوع
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   وقت العمل (آمن)
+========================= */
+function isOpenTime(){
+let h = new Date().getHours();
+return (h >= 22 || h < 7);
+}
+
+function timeControl(){
+
+if(isOpenTime()){
+document.getElementById("closed").style.display="none";
+document.getElementById("step1").style.display="block";
+return;
+}
+
+/* ⛔ مغلق */
+document.getElementById("step1").style.display="none";
+document.getElementById("step2").style.display="none";
+document.getElementById("closed").style.display="block";
+
+/* حساب العدّاد */
+let now = new Date();
+let next = new Date();
+next.setHours(7,0,0,0);
+
+if(now.getHours() >= 22){
+next.setDate(next.getDate()+1);
+}
+
+let diff = next - now;
+
+let h = Math.floor(diff/(1000*60*60));
+let m = Math.floor((diff%(1000*60*60))/(1000*60));
+let s = Math.floor((diff%(1000*60))/1000);
+
+document.getElementById("countdown").innerText =
+`يفتح بعد: ${h}س ${m}د ${s}ث`;
+}
+
+setInterval(timeControl,1000);
+timeControl();
+
+
+/* =========================
+   الخطوات
+========================= */
+function nextStep(){
+if(!isOpenTime()){
+alert("⛔ الموقع مغلق الآن");
+return;
+}
+document.getElementById("step1").classList.remove("active");
+document.getElementById("step2").classList.add("active");
+}
+
+function backStep(){
+document.getElementById("step2").classList.remove("active");
+document.getElementById("step1").classList.add("active");
+}
+
+
+/* =========================
+   إرسال تيليغرام
+========================= */
+async function send(){
+
+if(!isOpenTime()){
+alert("⛔ الموقع مغلق");
+return;
+}
+
+let name=document.getElementById("name").value;
+let lastname=document.getElementById("lastname").value;
+let phone=document.getElementById("phone").value;
+let state=document.getElementById("state").value;
+let service=document.getElementById("service").value;
+let proof=document.getElementById("proof").files[0];
+
+if(!name||!lastname||!phone){
+alert("⚠️ املأ جميع البيانات");
+return;
+}
+
+if(!proof){
+alert("⚠️ يجب رفع وصل الدفع");
+return;
+}
+
+let token="YOUR_BOT_TOKEN";
+let chat_id="YOUR_CHAT_ID";
+
+let message=
+`🧾 طلب حجز جديد
+👤 الاسم: ${name}
+👤 اللقب: ${lastname}
+📞 الهاتف: ${phone}
+📍 الولاية: ${state}
+💆 الخدمة: ${service}
+💳 وصل الدفع: مرفوع ✔️`;
+
+let url=`https://api.telegram.org/bot${token}/sendMessage`;
+
+let res=await fetch(url,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+chat_id:chat_id,
+text:message
+})
+});
+
+if(res.ok){
+alert("✔️ تم إرسال الحجز بنجاح");
+}else{
+alert("❌ خطأ في الإرسال");
+}
+
+}
+
+</script>
+
+</body>
+  </html>
