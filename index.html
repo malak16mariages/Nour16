@@ -3,72 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خدمات مساج - الحجز</title>
+<title>منصة تداول جماعي</title>
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-background:url("https://images.unsplash.com/photo-1544161515-4ab6ce6db874") center/cover no-repeat fixed;
-color:white;
-display:flex;
-justify-content:center;
-padding:20px;
+    margin:0;
+    font-family:Arial;
+    background:#0b0b0b;
+    color:white;
 }
-
 .container{
-width:100%;
-max-width:450px;
-background:rgba(0,0,0,0.75);
-backdrop-filter:blur(10px);
-padding:20px;
-border-radius:18px;
-border:1px solid rgba(255,255,255,0.1);
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    padding:20px;
 }
-
-h2{
-text-align:center;
-color:#00ffcc;
+.card{
+    background:#1c1c1c;
+    padding:15px;
+    margin:10px 0;
+    border-radius:12px;
 }
-
-input,select,button{
-width:100%;
-padding:10px;
-margin:8px 0;
-border-radius:8px;
-border:none;
-outline:none;
+input,button{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border:none;
+    border-radius:8px;
+    box-sizing:border-box;
 }
-
 button{
-background:linear-gradient(135deg,#00ffcc,#00b3a6);
-color:black;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
+    background:#00c896;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
 }
-
-button:hover{
-transform:scale(1.03);
-}
-
-.step{display:none;}
-.active{display:block;}
-
-#closed{
-display:none;
-text-align:center;
-padding:15px;
-margin-bottom:10px;
-border:1px solid rgba(255,255,255,0.1);
-border-radius:10px;
-}
-
 .small{
-font-size:12px;
-opacity:0.8;
-text-align:center;
+    font-size:13px;
+    color:#aaa;
 }
 </style>
 </head>
@@ -77,55 +46,113 @@ text-align:center;
 
 <div class="container">
 
-<h2>حجز خدمات مساج</h2>
+<h2>💰 منصة التداول الجماعي</h2>
 
-<p class="small">⏰ وقت العمل: من 22:00 إلى 07:00</p>
-
-<!-- ⛔ الإغلاق -->
-<div id="closed">
-<h2>⛔ الموقع مغلق</h2>
-<p>أوقات العمل من 22:00 إلى 07:00</p>
-<h3 id="countdown" style="color:#00ffcc;"></h3>
+<div class="card">
+<button onclick="register()">إنشاء حساب</button>
+<p>🆔 المستخدم: <span id="uid">لم يتم</span></p>
 </div>
 
-<!-- STEP 1 -->
-<div id="step1" class="step active">
+<div class="card">
+<h3>💳 إيداع عبر بريدي موب</h3>
+<p class="small">رقم الحساب: 00799999004286372491</p>
 
-<input type="text" id="name" placeholder="الاسم">
-<input type="text" id="lastname" placeholder="اللقب">
-<input type="tel" id="phone" placeholder="رقم الهاتف">
+<input id="amount" placeholder="المبلغ بالدينار">
+<button onclick="deposit()">إيداع</button>
+</div>
 
-<select id="state">
-<option>اختر الولاية</option>
-<option>الجزائر</option>
-<option>وهران</option>
-<option>قسنطينة</option>
-<option>باتنة</option>
-<option>بجاية</option>
-<option>سطيف</option>
-<option>عنابة</option>
-<option>تلمسان</option>
-</select>
+<div class="card">
+<h3>👥 المحفظة الجماعية</h3>
 
-<select id="service">
-<option>اختر الخدمة</option>
-<option>مساج عادي</option>
-<option>مساج VIP</option>
-</select>
+<input id="groupAmount" placeholder="مبلغ التحويل">
+<button onclick="toGroup()">تحويل</button>
 
-<button onclick="nextStep()">التالي ➜ الدفع</button>
+<p>رصيدك: <span id="balance">0</span> DA</p>
+<p>المحفظة الجماعية: <span id="group">0</span> DA</p>
+</div>
 
 </div>
 
-<!-- STEP 2 -->
-<div id="step2" class="step">
+<script>
+// تخزين محلي (بدون سيرفر)
+let user = {
+    id: null,
+    balance: 0
+};
 
-<p class="small">💳 رقم الحساب البريدي:<br><b>00799999004286372491</b></p>
+let groupWallet = 0;
 
-<p class="small">⚠️ يجب رفع وصل الدفع</p>
+// إنشاء حساب
+function register(){
+    user.id = "USR-" + Math.floor(Math.random()*1000000);
+    user.balance = 0;
+    save();
+    document.getElementById("uid").innerText = user.id;
+}
 
-<input type="file" id="proof">
+// إيداع (محاكاة فقط)
+function deposit(){
+    let amount = Number(document.getElementById("amount").value);
 
-<button onclick="send()">تأكيد الحجز</button>
+    if(!amount || amount <= 0){
+        alert("أدخل مبلغ صحيح");
+        return;
+    }
 
-<button onclick="backStep()" style="background:#444;color
+    user.balance += amount;
+    save();
+    updateUI();
+
+    alert("تم الإيداع (محاكاة عبر بريدي موب)");
+}
+
+// تحويل للمحفظة الجماعية
+function toGroup(){
+    let amount = Number(document.getElementById("groupAmount").value);
+
+    if(amount > user.balance){
+        alert("رصيد غير كافي");
+        return;
+    }
+
+    user.balance -= amount;
+    groupWallet += amount;
+
+    save();
+    updateUI();
+
+    alert("تم التحويل للمحفظة الجماعية");
+}
+
+// حفظ البيانات في المتصفح
+function save(){
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("group", groupWallet);
+}
+
+// تحميل البيانات
+function load(){
+    let u = localStorage.getItem("user");
+    let g = localStorage.getItem("group");
+
+    if(u) user = JSON.parse(u);
+    if(g) groupWallet = Number(g);
+
+    updateUI();
+}
+
+// تحديث الواجهة
+function updateUI(){
+    document.getElementById("balance").innerText = user.balance;
+    document.getElementById("group").innerText = groupWallet;
+
+    if(user.id){
+        document.getElementById("uid").innerText = user.id;
+    }
+}
+
+load();
+</script>
+
+</body>
+</html>
