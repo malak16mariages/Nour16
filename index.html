@@ -1,158 +1,95 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة تداول جماعي</title>
+<title>خدمات سبا VIP</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial;
-    background:#0b0b0b;
-    color:white;
+margin:0;
+font-family:Arial;
+background:#111;
+color:white;
 }
+
 .container{
-    padding:20px;
+max-width:420px;
+margin:30px auto;
+background:#1b1b1b;
+padding:20px;
+border-radius:15px;
+border:1px solid #333;
 }
-.card{
-    background:#1c1c1c;
-    padding:15px;
-    margin:10px 0;
-    border-radius:12px;
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#2b2b2b;
+color:white;
+box-sizing:border-box;
 }
-input,button{
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    border:none;
-    border-radius:8px;
-    box-sizing:border-box;
-}
+
 button{
-    background:#00c896;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#00c46a;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
 }
-.small{
-    font-size:13px;
-    color:#aaa;
+
+.price{
+margin-top:15px;
+padding:12px;
+background:#111;
+border-radius:10px;
+text-align:center;
+font-size:20px;
+color:#00ff99;
+}
+
+.notice{
+margin-top:10px;
+padding:10px;
+background:#003d1f;
+border-radius:10px;
+text-align:center;
+font-size:13px;
+color:#8cffc1;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>💰 منصة التداول الجماعي</h2>
+<h1 style="text-align:center">خدمات سبا VIP</h1>
 
-<div class="card">
-<button onclick="register()">إنشاء حساب</button>
-<p>🆔 المستخدم: <span id="uid">لم يتم</span></p>
-</div>
+<form id="form">
 
-<div class="card">
-<h3>💳 إيداع عبر بريدي موب</h3>
-<p class="small">رقم الحساب: 00799999004286372491</p>
+<input type="text" id="name" placeholder="الاسم" required>
 
-<input id="amount" placeholder="المبلغ بالدينار">
-<button onclick="deposit()">إيداع</button>
-</div>
+<input type="tel" id="phone" placeholder="الهاتف" required>
 
-<div class="card">
-<h3>👥 المحفظة الجماعية</h3>
+<select id="wilaya" required>
+<option value="">اختر الولاية</option>
+<option>وهران</option>
+<option>الجزائر</option>
+<option>عنابة</option>
+<option>قسنطينة</option>
+</select>
 
-<input id="groupAmount" placeholder="مبلغ التحويل">
-<button onclick="toGroup()">تحويل</button>
-
-<p>رصيدك: <span id="balance">0</span> DA</p>
-<p>المحفظة الجماعية: <span id="group">0</span> DA</p>
-</div>
-
-</div>
-
-<script>
-// تخزين محلي (بدون سيرفر)
-let user = {
-    id: null,
-    balance: 0
-};
-
-let groupWallet = 0;
-
-// إنشاء حساب
-function register(){
-    user.id = "USR-" + Math.floor(Math.random()*1000000);
-    user.balance = 0;
-    save();
-    document.getElementById("uid").innerText = user.id;
-}
-
-// إيداع (محاكاة فقط)
-function deposit(){
-    let amount = Number(document.getElementById("amount").value);
-
-    if(!amount || amount <= 0){
-        alert("أدخل مبلغ صحيح");
-        return;
-    }
-
-    user.balance += amount;
-    save();
-    updateUI();
-
-    alert("تم الإيداع (محاكاة عبر بريدي موب)");
-}
-
-// تحويل للمحفظة الجماعية
-function toGroup(){
-    let amount = Number(document.getElementById("groupAmount").value);
-
-    if(amount > user.balance){
-        alert("رصيد غير كافي");
-        return;
-    }
-
-    user.balance -= amount;
-    groupWallet += amount;
-
-    save();
-    updateUI();
-
-    alert("تم التحويل للمحفظة الجماعية");
-}
-
-// حفظ البيانات في المتصفح
-function save(){
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("group", groupWallet);
-}
-
-// تحميل البيانات
-function load(){
-    let u = localStorage.getItem("user");
-    let g = localStorage.getItem("group");
-
-    if(u) user = JSON.parse(u);
-    if(g) groupWallet = Number(g);
-
-    updateUI();
-}
-
-// تحديث الواجهة
-function updateUI(){
-    document.getElementById("balance").innerText = user.balance;
-    document.getElementById("group").innerText = groupWallet;
-
-    if(user.id){
-        document.getElementById("uid").innerText = user.id;
-    }
-}
-
-load();
-</script>
-
-</body>
-</html>
+<select id="service">
+<option value="8000">سبا عادي - 8000 دج</option>
+<option value="16000">سبا VIP - 16000 دج
