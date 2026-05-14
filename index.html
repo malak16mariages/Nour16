@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +9,20 @@
 body{
 margin:0;
 font-family:Arial;
-background:#111;
+background:#0f0f0f;
 color:white;
 }
 
 .container{
-max-width:420px;
-margin:30px auto;
-background:#1b1b1b;
+max-width:450px;
+margin:20px auto;
+background:#1c1c1c;
 padding:20px;
 border-radius:15px;
 border:1px solid #333;
 }
+
+h1{text-align:center;color:#00ff99}
 
 input,select{
 width:100%;
@@ -29,9 +30,8 @@ padding:12px;
 margin-top:10px;
 border:none;
 border-radius:10px;
-background:#2b2b2b;
+background:#2a2a2a;
 color:white;
-box-sizing:border-box;
 }
 
 button{
@@ -66,20 +66,40 @@ text-align:center;
 font-size:13px;
 color:#8cffc1;
 }
-</style>
 
+.images{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.images img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-<h1 style="text-align:center">خدمات سبا VIP</h1>
+<h1>خدمات سبا VIP</h1>
+
+<!-- صور -->
+<div class="images">
+<img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874">
+<img src="https://images.unsplash.com/photo-1519821172141-b5d8c4c5a5c5">
+<img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef">
+<img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd">
+</div>
 
 <form id="form">
 
 <input type="text" id="name" placeholder="الاسم" required>
-
 <input type="tel" id="phone" placeholder="الهاتف" required>
 
 <select id="wilaya" required>
@@ -88,8 +108,102 @@ color:#8cffc1;
 <option>الجزائر</option>
 <option>عنابة</option>
 <option>قسنطينة</option>
+<option>سطيف</option>
+<option>باتنة</option>
+<option>بجاية</option>
+<option>البليدة</option>
+<option>تيزي وزو</option>
+<option>تلمسان</option>
+<option>سيدي بلعباس</option>
+<option>ورقلة</option>
+<option>غرداية</option>
+<option>أدرار</option>
+<option>الشلف</option>
+<option>بومرداس</option>
+<option>المدية</option>
+<option>مستغانم</option>
+<option>النعامة</option>
+<option>عين تموشنت</option>
+<option>غليزان</option>
 </select>
 
 <select id="service">
 <option value="8000">سبا عادي - 8000 دج</option>
-<option value="16000">سبا VIP - 16000 دج
+<option value="16000">سبا VIP - 16000 دج</option>
+</select>
+
+<input type="text" id="promo" placeholder="كود البرومو (اختياري)">
+
+<div class="price">
+السعر النهائي:
+<span id="price">8000</span> دج
+</div>
+
+<!-- الدفع -->
+<div class="notice">
+بريدي موب<br>
+<b>00799999004286372491</b>
+</div>
+
+<input type="file" id="receipt" accept="image/*" required>
+
+<div class="notice">
+ارفع وصل الدفع لتأكيد الحجز
+</div>
+
+<button type="submit">إرسال الطلب</button>
+
+</form>
+
+</div>
+
+<script>
+
+const service = document.getElementById("service");
+const promo = document.getElementById("promo");
+const priceBox = document.getElementById("price");
+
+function calc(){
+let base = parseInt(service.value);
+let final = base;
+
+// كود خصم
+if(promo.value.trim() === "VIP5000" && base === 16000){
+final = 11000;
+}
+
+priceBox.innerText = final;
+}
+
+service.onchange = calc;
+promo.oninput = calc;
+
+document.getElementById("form").addEventListener("submit", function(e){
+e.preventDefault();
+
+calc();
+
+let name = document.getElementById("name").value;
+let phone = document.getElementById("phone").value;
+let wilaya = document.getElementById("wilaya").value;
+let serviceText = service.options[service.selectedIndex].text;
+let price = priceBox.innerText;
+
+alert(
+"تم استلام طلبك بنجاح ✅\n\n" +
+"الاسم: " + name + "\n" +
+"الهاتف: " + phone + "\n" +
+"الولاية: " + wilaya + "\n" +
+"الخدمة: " + serviceText + "\n" +
+"السعر: " + price + " دج\n\n" +
+"سنقوم بالتواصل معك قريباً"
+);
+
+document.getElementById("form").reset();
+priceBox.innerText = "8000";
+});
+
+</script>
+
+</body>
+</html>
